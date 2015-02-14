@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Leaflet Quick Start Guide Example</title>
+<meta charset="utf-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.css" />
+</head>
+<body>
+<div id="map" style="width: 600px; height: 400px"></div>
+
+<script src="http://leafletjs.com/dist/leaflet.js"></script>
+<script src="leaflet-plugins-1.2.1/layer/vector/KML.js"></script>
+
+<script>
+
+var map = L.map('map').setView([-27.4769, 153.0278], 13);
+
+L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+		maxZoom: 18,
+		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+		'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+		'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+		id: 'examples.map-i875mjb7'
+}).addTo(map);
+
+
+var popup = L.popup();
+
+function onMapClick(e) {
+	popup
+.setLatLng(e.latlng)
+.setContent("You clicked the map at " + e.latlng.toString())
+.openOn(map);
+}
+
+map.on('click', onMapClick);
+
+// var kmlLayer = new L.KML("doc.kml", {async: true});
+// var kmlLayer = new L.KML("parking.kml", {async: true});
+var kmlLayer = new L.KML("cemeteries.kml", {async: true});
+console.log("loading parking")
+
+kmlLayer.on("loaded", function(e) {
+  console.log("loaded parking")
+  map.fitBounds(e.target.getBounds());
+  console.log("loaded parking")
+});
+map.addLayer(kmlLayer);
+
+</script>
+</body>
+</html>
+
